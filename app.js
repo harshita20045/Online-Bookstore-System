@@ -7,6 +7,7 @@ import orderRouter from "./routes/order.route.js";
 import reviewRouter from "./routes/review.route.js";
 import bookRouter from "./routes/book.route.js"
 import cookieParser from "cookie-parser";
+import { specs, swaggerUi } from "./swagger.js";
 
 dotenv.config();
 mongoose.connect(process.env.MONGODB_URL).then(() => console.log("Database Connected")).catch(() => console.log("Database Not Connected"));
@@ -18,6 +19,10 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
+
+// Swagger API Documentation
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(specs));
+
 app.use("/api/v1/users",userRouter);
 app.use("/api/v1/carts", cartRouter);
 app.use("/api/v1/orders", orderRouter);
